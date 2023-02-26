@@ -182,11 +182,49 @@ export default class Game extends Phaser.Scene
         
         btnLeft = this.add.image(width * 0.1, height * 0.9, 'btnLeft', 0);
             btnLeft.setInteractive();
+            btnLeft.on ('pointerdown', () => {
+                btnLeft.isDown = true;
+            });
+            btnLeft.on ('pointerup', () => {
+                btnLeft.isDown = false;
+            });
 
         btnDown = this.add.image(width * 0.8, height * 0.9, 'btnDown', 0)
+            btnDown.setInteractive();
+            btnDown.on ('pointerdown', () => {
+                btnDown.isDown = true;
+            });
+            btnDown.on ('pointerup', () => {
+                btnDown.isDown = false;
+            });
+
         btnRight = this.add.image(width * 0.9, height * 0.9, 'btnRight', 0)
+            btnRight.setInteractive();
+            btnRight.on ('pointerdown', () => {
+                btnRight.isDown = true;
+            });
+            btnRight.on ('pointerup', () => {
+                btnRight.isDown = false;
+            });
+
         btnUp = this.add.image(width * 0.2, height * 0.9, 'btnUp', 0)
+            btnUp.setInteractive();
+            btnUp.on ('pointerdown', () => {
+                btnUp.isDown = true;
+            });
+            btnUp.on ('pointerup', () => {
+                btnUp.isDown = false;
+            });
+
         btnOpen = this.add.image(width * 0.5, height * 0.9, 'btnOpen', 0)
+            btnOpen.setInteractive();
+            btnOpen.on ('pointerdown', () => {
+                btnOpen.isDown = true;
+            });
+            btnOpen.on ('pointerup', () => {
+                btnOpen.isDown = false;
+            });
+
         
         lose = this.sound.add("lose", { loop: false });
         win = this.sound.add("win", { loop: false });
@@ -416,23 +454,23 @@ export default class Game extends Phaser.Scene
 
         const speed = 200
 
-        if (keyA.isDown)
+        if (keyA.isDown || btnLeft.isDown)
         {
             this.player.setVelocity(-speed, 0)
             this.player.play('left-walk', true)
         }
 
-        else if (keyD.isDown)
+        else if (keyD.isDown || btnRight.isDown)
         {
             this.player.setVelocity(speed, 0)
             this.player.play('right-walk', true)
         }
-        else if (keyW.isDown)
+        else if (keyW.isDown || btnUp.isDown)
         {
             this.player.setVelocity(0, -speed)
             this.player.play('up-walk', true)
         }
-        else if (keyS.isDown)
+        else if (keyS.isDown || btnDown.isDown)
         {
 
             this.player.setVelocity(0, speed)
@@ -447,7 +485,7 @@ export default class Game extends Phaser.Scene
             this.player.play(`${direction}-idle`)
         }
 
-        const spaceJustPressed = Phaser.Input.Keyboard.JustUp(this.cursors.space)
+        const spaceJustPressed = Phaser.Input.Keyboard.JustUp(this.cursors.space) || btnOpen.isDown
         if (spaceJustPressed && this.activeBox)
         {
             this.openBox(this.activeBox)
