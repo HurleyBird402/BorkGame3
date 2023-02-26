@@ -8,6 +8,14 @@ let keyS;
 let keyD;
 let keyW;
 
+let btnLeft;
+let btnDown;
+let btnRight;
+let btnUp;
+let btnOpen;
+
+var isClicking = false;
+
 let win;
 let lose;
 let alien;
@@ -171,6 +179,14 @@ export default class Game extends Phaser.Scene
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        
+        btnLeft = this.add.image(width * 0.1, height * 0.9, 'btnLeft', 0);
+            btnLeft.setInteractive();
+
+        btnDown = this.add.image(width * 0.8, height * 0.9, 'btnDown', 0)
+        btnRight = this.add.image(width * 0.9, height * 0.9, 'btnRight', 0)
+        btnUp = this.add.image(width * 0.2, height * 0.9, 'btnUp', 0)
+        btnOpen = this.add.image(width * 0.5, height * 0.9, 'btnOpen', 0)
         
         lose = this.sound.add("lose", { loop: false });
         win = this.sound.add("win", { loop: false });
@@ -405,6 +421,7 @@ export default class Game extends Phaser.Scene
             this.player.setVelocity(-speed, 0)
             this.player.play('left-walk', true)
         }
+
         else if (keyD.isDown)
         {
             this.player.setVelocity(speed, 0)
@@ -479,4 +496,5 @@ export default class Game extends Phaser.Scene
 
         this.countdown.update()
     }
+    
 }
