@@ -18,6 +18,10 @@ export default class Preloader extends Phaser.Scene
         this.load.image('aether', 'textures/aether.png')
         this.load.image('slork', 'textures/slork.png')
         this.load.image('alientopus', 'textures/alientopus.png')
+        
+        this.load.audio("win", 'sounds/win.wav');
+        this.load.audio("lose", 'sounds/lose.wav');
+        this.load.audio("alien", 'sounds/alien.wav');
     }
 
     create()

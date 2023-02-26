@@ -1,7 +1,23 @@
 import Phaser from 'phaser'
 import CountdownController from './CountdownController'
 
-// to do: make playable on mobile with on-screen tap commands, change to WASD
+// to do: make playable on mobile with on-screen tap commands and re-sizing/scaling --- put text explaining keys to play --- add sound for win and lose and alien
+
+let keyA;
+let keyS;
+let keyD;
+let keyW;
+
+let win;
+let lose;
+let alien;
+
+// code for touch buttons. not working yet. need to add buttons onto screen.
+// const el = document.querySelector("canvas");
+// el.addEventListener("touchstart", handleStart);
+// el.addEventListener("touchmove", handleMove);
+// el.addEventListener("touchend", handleEnd);
+// el.addEventListener("touchcancel", handleCancel);
 
 const levelOne = [
     [1, 0, 3],
@@ -150,6 +166,15 @@ export default class Game extends Phaser.Scene
         this.countdown.start(this.handleCountdownFinished.bind(this))
 
         this.physics.add.collider(this.player, this.boxGroup, this.handlePlayerBoxCollide, undefined, this)
+
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        
+        lose = this.sound.add("lose", { loop: false });
+        win = this.sound.add("win", { loop: false });
+        alien = this.sound.add("alien", { loop: false });
     }
 
     createBoxes()
@@ -178,6 +203,7 @@ export default class Game extends Phaser.Scene
     {
         this.player.active = false
         this.player.setVelocity(0, 0)
+        lose.play();
 
         const { width, height }= this.scale
         this.add.text(width * 0.5, height * 0.9, 'You Lose! Womp Womp', { fontFamily: 'Verdana', fontSize: 48, backgroundColor: '#FF0000', color: '#ffffff'})
@@ -299,7 +325,8 @@ export default class Game extends Phaser.Scene
 
         item.setTint(0xff0000)
         this.cameras.main.shake(500);
-        box.setFrame(12)
+        box.setFrame(12);
+        alien.play();
 
         this.player.active = false
         this.player.setVelocity(0, 0)
@@ -355,6 +382,7 @@ export default class Game extends Phaser.Scene
                 this.countdown.stop()
                 this.player.active = false
                 this.player.setVelocity(0, 0)
+                win.play();
 
                 const { width, height } = this.scale
                 this.add.text(width * 0.5, height * 0.9, 'You Win!', { fontFamily: 'Verdana', fontSize: 48, backgroundColor: '#FFD700', color: '#000000'})
@@ -372,22 +400,22 @@ export default class Game extends Phaser.Scene
 
         const speed = 200
 
-        if (this.cursors.left.isDown)
+        if (keyA.isDown)
         {
             this.player.setVelocity(-speed, 0)
             this.player.play('left-walk', true)
         }
-        else if (this.cursors.right.isDown)
+        else if (keyD.isDown)
         {
             this.player.setVelocity(speed, 0)
             this.player.play('right-walk', true)
         }
-        else if (this.cursors.up.isDown)
+        else if (keyW.isDown)
         {
             this.player.setVelocity(0, -speed)
             this.player.play('up-walk', true)
         }
-        else if (this.cursors.down.isDown)
+        else if (keyS.isDown)
         {
 
             this.player.setVelocity(0, speed)
